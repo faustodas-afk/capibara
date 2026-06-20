@@ -11,7 +11,7 @@ insieme: tranquillo ma produttivo.
 
 | Ruolo | Chi | Cosa fa |
 |---|---|---|
-| **Lead Architect** | umano (Fausto) | visione, obiettivi, vincoli, approva |
+| **Lead Architect** | umano | visione, obiettivi, vincoli, approva |
 | **Senior Engineer** | Claude Code | esegue: codice, test, refactoring, commit |
 | **CTO** | Codex (CLI) | roadmap, validazione, autorizza i commit |
 | **Consulente** | Agy / Antigravity (CLI) | pareri su decisioni importanti |

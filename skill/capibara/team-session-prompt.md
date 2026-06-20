@@ -65,7 +65,7 @@ Architect parla solo con Claude Code.
 
 ### Ruoli fissi
 
-- **Lead Architect (Fausto)** — visione, obiettivi, vincoli; approva direzioni
+- **Lead Architect (umano)** — visione, obiettivi, vincoli; approva direzioni
   strategiche. Unico umano nel loop, interagisce solo in questa chat.
 - **Senior Engineer (Claude Code, io)** — codice, test, refactoring, commit.
   Esecutore tecnico. Gira su Opus 4.8 o Fable 5. Fa da tramite con le CLI esterne.
