@@ -1,38 +1,38 @@
 #!/usr/bin/env bash
-# team-init.sh — Capibara: prepara una cartella progetto per il workflow di team.
-# Uso: bash team-init.sh [cartella]   (default: cartella corrente)
-# Idempotente: non sovrascrive file esistenti; accoda il prompt a un CLAUDE.md
-# già presente solo se non c'è già (marcatore).
+# team-init.sh — Capibara: prepare a project folder for the team workflow.
+# Usage: bash team-init.sh [folder]   (default: current folder)
+# Idempotent: never overwrites existing files; appends the prompt to an existing
+# CLAUDE.md only if it isn't already there (marker).
 set -euo pipefail
 
-# I template stanno nella stessa cartella di questo script (portabile).
+# Templates live in the same folder as this script (portable).
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC_PROMPT="$SCRIPT_DIR/team-session-prompt.md"
 SRC_RUNBOOK="$SCRIPT_DIR/team-RUNBOOK.md"
 MARK="<!-- team-session-prompt -->"
 
 dir="${1:-$PWD}"
-[ -d "$dir" ] || { echo "✗ cartella inesistente: $dir" >&2; exit 1; }
-[ -f "$SRC_PROMPT" ] || { echo "✗ manca $SRC_PROMPT" >&2; exit 1; }
-[ -f "$SRC_RUNBOOK" ] || { echo "✗ manca $SRC_RUNBOOK" >&2; exit 1; }
+[ -d "$dir" ] || { echo "✗ folder does not exist: $dir" >&2; exit 1; }
+[ -f "$SRC_PROMPT" ] || { echo "✗ missing $SRC_PROMPT" >&2; exit 1; }
+[ -f "$SRC_RUNBOOK" ] || { echo "✗ missing $SRC_RUNBOOK" >&2; exit 1; }
 
-# RUNBOOK: copia se assente
+# RUNBOOK: copy if absent
 if [ -f "$dir/RUNBOOK.md" ]; then
-  echo "• RUNBOOK.md già presente, lasciato com'è"
+  echo "• RUNBOOK.md already present, left as is"
 else
   cp "$SRC_RUNBOOK" "$dir/RUNBOOK.md"
-  echo "✓ RUNBOOK.md copiato"
+  echo "✓ RUNBOOK.md copied"
 fi
 
-# CLAUDE.md: crea, oppure accoda il prompt se non già marcato
+# CLAUDE.md: create, or append the prompt if not already marked
 if [ ! -f "$dir/CLAUDE.md" ]; then
   { echo "$MARK"; cat "$SRC_PROMPT"; } > "$dir/CLAUDE.md"
-  echo "✓ CLAUDE.md creato (prompt di team auto-caricato all'avvio)"
+  echo "✓ CLAUDE.md created (team prompt auto-loaded at startup)"
 elif grep -qF "$MARK" "$dir/CLAUDE.md"; then
-  echo "• CLAUDE.md contiene già il prompt di team, niente da fare"
+  echo "• CLAUDE.md already contains the team prompt, nothing to do"
 else
   { echo; echo "$MARK"; cat "$SRC_PROMPT"; } >> "$dir/CLAUDE.md"
-  echo "✓ prompt di team accodato al CLAUDE.md esistente"
+  echo "✓ team prompt appended to the existing CLAUDE.md"
 fi
 
-echo "Pronto. Apri:  cd \"$dir\" && claude   (oppure: claude -c per riprendere)"
+echo "Ready. Open:  cd \"$dir\" && claude   (or: claude -c to resume)"

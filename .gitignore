@@ -1,10 +1,10 @@
-# Segreti — mai versionare
+# Secrets — never version
 .env
 secrets.local.*
 *.key
 *.pem
 
-# Stato/handoff e backup locali (non parte del template)
+# State/handoff and local backups (not part of the template)
 RESUME.md
 milestones/
 

@@ -1,58 +1,58 @@
 ---
 name: capibara
 description: >
-  Avvia o imposta il workflow di team Capibara in una cartella di progetto:
-  ruoli fissi (Lead Architect umano, Senior Engineer = Claude, CTO = Codex CLI,
-  Consulente = Agy/Antigravity CLI), governance dei modelli, milestone Vx.x,
-  handoff/resume, postura agentic-engineering. Usa questa skill ogni volta che
-  l'utente dice "/capibara", "avvia capibara", "imposta il team", "parti col
-  sistema", "inizializza il progetto col workflow", oppure quando si comincia a
-  lavorare in una cartella e va stabilita la governance del team. Installa
-  CLAUDE.md + RUNBOOK.md se mancano (senza sovrascrivere il lavoro esistente),
-  poi carica la governance e distingue progetto nuovo da progetto esistente.
+  Start or set up the Capibara team workflow in a project folder: fixed roles
+  (Lead Architect = human, Senior Engineer = Claude, CTO = Codex CLI, Advisor =
+  Agy/Antigravity CLI), model governance, Vx.x milestones, handoff/resume,
+  agentic-engineering posture. Use this skill whenever the user says
+  "/capibara", "start capibara", "set up the team", "kick off the system",
+  "initialize the project with the workflow", or when starting to work in a
+  folder where the team governance should be established. Installs CLAUDE.md +
+  RUNBOOK.md if missing (without overwriting existing work), then loads the
+  governance and distinguishes a new project from an existing one.
 ---
 
-# Capibara — avvio del team
+# Capibara — starting the team
 
-Capibara è il sistema di team di sviluppo da CLI. Questa skill prepara la cartella
-corrente e fa partire il workflow. Lo script `team-init.sh` e i template
-(`team-session-prompt.md`, `team-RUNBOOK.md`) stanno **in questa stessa cartella
-skill** (auto-contenuta).
+Capibara is the CLI development-team system. This skill prepares the current
+folder and starts the workflow. The `team-init.sh` script and the templates
+(`team-session-prompt.md`, `team-RUNBOOK.md`) live **in this same skill folder**
+(self-contained).
 
-## Passi
+## Steps
 
-1. **Prepara la cartella corrente** (idempotente, non sovrascrive nulla):
+1. **Prepare the current folder** (idempotent, never overwrites anything):
    ```
    bash "$HOME/.claude/skills/capibara/team-init.sh" "$PWD"
    ```
-   (se la skill è installata altrove, usa lo `team-init.sh` accanto a questo SKILL.md)
-   Copia `RUNBOOK.md` e installa il prompt di team come `CLAUDE.md` (se un
-   `CLAUDE.md` esiste già, accoda sotto il marcatore senza toccare il resto).
+   (if the skill is installed elsewhere, use the `team-init.sh` next to this SKILL.md)
+   It copies `RUNBOOK.md` and installs the team prompt as `CLAUDE.md` (if a
+   `CLAUDE.md` already exists, it appends below the marker without touching the rest).
 
-2. **Carica la governance**: leggi `CLAUDE.md` (ruoli, modelli, autonomia,
-   regole), poi `RUNBOOK.md` (procedure: invocazione Codex/Agy, eval, worktree,
-   milestone, debito, handoff). Se esiste `RESUME.md`, leggilo: è l'unica fonte
-   di stato del progetto.
+2. **Load the governance**: read `CLAUDE.md` (roles, models, autonomy, rules),
+   then `RUNBOOK.md` (procedures: Codex/Agy invocation, eval, worktree,
+   milestones, debt, handoff). If `RESUME.md` exists, read it: it is the single
+   source of project state.
 
-3. **Distingui nuovo vs esistente** (vedi RUNBOOK §1):
-   - **Cartella senza codice** → progetto nuovo e sconosciuto. Greenfield: chiedi
-     l'obiettivo al Lead Architect, non assumere requisiti, parti dalla roadmap
-     (Codex). Niente file di codice finché non c'è una direzione.
-   - **Cartella con progetto esistente** → ispeziona prima (struttura,
-     `git status`, README, file chiave), poi imposta la governance **senza
-     sovrascrivere** il lavoro svolto.
+3. **Distinguish new vs existing** (see RUNBOOK §1):
+   - **Folder with no code** → new, unknown project. Greenfield: ask the Lead
+     Architect for the goal, don't assume requirements, start from the roadmap
+     (Codex). No code files until there is a direction.
+   - **Folder with an existing project** → inspect first (structure,
+     `git status`, README, key files), then set up the governance **without
+     overwriting** existing work.
 
-4. **Dichiara lo stato e parti**: comunica il modello attivo (default Opus 4.8),
-   conferma che il team è in piedi, e procedi col flusso:
-   obiettivo (LA) → roadmap (Codex) → esegui → verifica (Codex) → decisione
-   importante? consulta Agy → commit solo dopo OK Codex.
+4. **Declare state and start**: announce the active model (default Opus 4.8),
+   confirm the team is up, and follow the flow:
+   goal (LA) → roadmap (Codex) → execute → verify (Codex) → important decision?
+   consult Agy → commit only after Codex's OK.
 
-## Note
+## Notes
 
-- Le CLI esterne non vedono la sessione: ogni invocazione di `codex`/`agy` deve
-  contenere tutto il contesto. Comandi: `codex exec --skip-git-repo-check "..."`,
+- External CLIs don't see the session: every `codex`/`agy` invocation must carry
+  all the context. Commands: `codex exec --skip-git-repo-check "..."`,
   `agy --print "..."`.
-- Recupero da crash: riaprire il terminale nella cartella e `claude -c` o
+- Crash recovery: reopen the terminal in the folder and run `claude -c` or
   `claude --resume`.
-- La governance dettagliata vive nei file di progetto (CLAUDE.md/RUNBOOK.md), non
-  va ripetuta qui: questa skill serve ad attivarla, non a sostituirla.
+- The detailed governance lives in the project files (CLAUDE.md/RUNBOOK.md); it
+  is not repeated here: this skill activates it, it does not replace it.

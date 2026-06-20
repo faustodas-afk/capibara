@@ -1,232 +1,233 @@
-# RUNBOOK di progetto — procedure operative del team
+# Project RUNBOOK — team operational procedures
 
-Template di team. Copialo nella radice di ogni progetto come `RUNBOOK.md` e
-adattalo. Contiene le procedure ripetibili (l'*Harness*) che il prompt di avvio
-(il *Model*) richiama. Tienilo snello: caricato on-demand, non a ogni turno.
+Team template. Copy it to the root of every project as `RUNBOOK.md` and adapt it.
+It holds the repeatable procedures (the *Harness*) that the startup prompt (the
+*Model*) refers to. Keep it lean: loaded on demand, not every turn.
 
-> Vincoli fissi del progetto: **niente GitHub, niente remote, niente PR.** Git
-> solo locale. Un eventuale remoto futuro dev'essere privato, non condiviso, e
-> solo dopo OK esplicito del LA. Tutti i backup restano locali.
-
----
-
-## 1. Protocollo di avvio task
-
-**Prima cosa: nuovo progetto o esistente?**
-- **Cartella senza codice (solo CLAUDE.md/RUNBOOK.md, o vuota)** → progetto nuovo
-  e sconosciuto. Modalità greenfield: chiedi l'obiettivo al LA, non assumere
-  requisiti, parti dalla roadmap (Codex). Niente file di codice finché non c'è una
-  direzione.
-- **Cartella con un progetto esistente** → ispeziona PRIMA di proporre modifiche
-  (struttura, `git status`, README, file chiave) per capire cosa c'è. La
-  governance (CLAUDE.md/RUNBOOK.md) si aggiunge **senza sovrascrivere** il lavoro
-  già presente; `team-init` lo garantisce a livello di file.
-
-Quando il LA dà un obiettivo, prima di modificare qualsiasi file:
-
-1. `git status --short` + branch corrente (se il progetto è git); altrimenti nota
-   lo stato della cartella.
-2. Leggi i file guida: questo `RUNBOOK.md`, `AGENTS.md`/`CLAUDE.md`, README rilevanti.
-3. Identifica workspace/repo autorizzato (non uscirne).
-4. Prepara un brief per Codex (vedi template §2) con: obiettivo, stato repo,
-   vincoli, modello attivo, file guida trovati, rischi iniziali.
-5. Chiedi a Codex roadmap + primo passo + criteri di verifica.
-6. Solo letture/ispezioni finché Codex non ha dato la roadmap.
+> Project default constraints: **no GitHub, no remote, no PR** for work-project
+> code. Git local only. Any future remote must be private, not shared, and only
+> after the LA's explicit OK. All backups stay local.
 
 ---
 
-## 2. Template invocazione Codex (CTO)
+## 1. Task startup protocol
 
-`codex exec --skip-git-repo-check "<...>"` — includi sempre:
+**First thing: new project or existing one?**
+- **Folder with no code (only CLAUDE.md/RUNBOOK.md, or empty)** → new, unknown
+  project. Greenfield mode: ask the LA for the goal, don't assume requirements,
+  start from the roadmap (Codex). No code files until there's a direction.
+- **Folder with an existing project** → inspect BEFORE proposing changes
+  (structure, `git status`, README, key files) to understand what's there. The
+  governance (CLAUDE.md/RUNBOOK.md) is added **without overwriting** existing
+  work; `team-init` guarantees this at the file level.
 
-- **Obiettivo** (dal LA)
-- **Modello attivo** del SE
-- **Repo/workdir** e stato git sintetico
-- **Contesto statico** rilevante (estratti di `AGENTS.md`/`CLAUDE.md` se presenti)
-- **Roadmap / stato del passo corrente**
-- **Diff o file cambiati**, se si è in fase di verifica
-- **Test/eval eseguiti** con risultato
-- **Decisione richiesta** a Codex
+When the LA gives a goal, before modifying any file:
 
-## 2b. Template invocazione Agy (Consulente)
-
-`agy --print "<...>"` (modalità non-interattiva; `agy` richiede TTY senza `--print`).
-Usa per decisioni importanti (architettura, trade-off, scelte irreversibili).
-Includi: setup/ruoli, oggetto della decisione, opzioni con trade-off, riserva del
-SE, domanda netta. Agy non vede la sessione: contesto autosufficiente.
-
----
-
-## 3. Eval operativa
-
-Usa un eval quando il risultato ha qualità **non deterministica**: UX, refactoring
-ampio, ranking, generazione testo, workflow agentici, decisioni architetturali.
-(Per logica puramente deterministica bastano i test.)
-
-Ogni eval deve avere:
-- **rubrica** con criteri osservabili (cosa si misura)
-- **soglia** di accettazione (pass/fail)
-- **casi** positivi/negativi o scenari
-- **procedura ripetibile** (comando, checklist o script)
-
-Bar all'eval, non alla demo: una demo prova che funziona una volta, l'eval che
-funziona affidabilmente.
+1. `git status --short` + current branch (if the project is git); otherwise note
+   the folder state.
+2. Read the guide files: this `RUNBOOK.md`, `AGENTS.md`/`CLAUDE.md`, relevant READMEs.
+3. Identify the authorized workspace/repo (don't leave it).
+4. Prepare a brief for Codex (see template §2) with: goal, repo state,
+   constraints, active model, guide files found, initial risks.
+5. Ask Codex for roadmap + first step + verification criteria.
+6. Reads/inspections only until Codex has given the roadmap.
 
 ---
 
-## 4. Policy worktree / file sporco
+## 2. Codex (CTO) invocation template
 
-Prima di modificare, controlla lo stato della cartella:
-- Non sovrascrivere modifiche non tue o file non tracciati.
-- Se un file già modificato è necessario, leggilo e integra conservativamente.
-- Conflitto sostanziale o branch sbagliato → fermati e chiedi al LA.
+`codex exec --skip-git-repo-check "<...>"` — always include:
+
+- **Goal** (from the LA)
+- **Active model** of the SE
+- **Repo/workdir** and a brief git status
+- **Relevant static context** (excerpts of `AGENTS.md`/`CLAUDE.md` if present)
+- **Roadmap / current step state**
+- **Diff or changed files**, if in a verification phase
+- **Tests/evals run** with their result
+- **The decision requested** of Codex
+
+## 2b. Agy (Advisor) invocation template
+
+`agy --print "<...>"` (non-interactive mode; `agy` requires a TTY without
+`--print`). Use for important decisions (architecture, trade-offs, irreversible
+choices). Include: setup/roles, the decision at hand, options with trade-offs, the
+SE's reservation, a sharp question. Agy doesn't see the session: self-contained
+context.
 
 ---
 
-## 5. Milestone e backup `Vx.x`
+## 3. Operational eval
 
-A ogni milestone importante (Codex autorizza il commit che chiude un modulo/fase,
-o il LA approva uno stato stabile). Scopo: cronistoria + rollback locale.
+Use an eval when the result has **non-deterministic** quality: UX, large
+refactors, ranking, text generation, agentic workflows, architectural decisions.
+(For purely deterministic logic, tests are enough.)
 
-**Se il progetto è git (preferito):**
+Every eval must have:
+- a **rubric** with observable criteria (what is measured)
+- an acceptance **threshold** (pass/fail)
+- **cases** positive/negative or scenarios
+- a **repeatable procedure** (command, checklist, or script)
+
+Bar at the eval, not the demo: a demo proves it works once, an eval that it works
+reliably.
+
+---
+
+## 4. Worktree / dirty-file policy
+
+Before modifying, check the folder state:
+- Don't overwrite changes that aren't yours or untracked files.
+- If a file already modified is needed, read it and integrate conservatively.
+- Substantial conflict or wrong branch → stop and ask the LA.
+
+---
+
+## 5. Milestones and backup `Vx.x`
+
+At every important milestone (Codex authorizes the commit that closes a
+module/phase, or the LA approves a stable state). Purpose: history + local
+rollback.
+
+**If the project is git (preferred):**
 ```
-git tag vX.Y            # es. git tag v1.1 -m "modulo X stabile, make test verde"
-git tag                 # elenco milestone
-git checkout vX.Y       # ispeziona/rollback a una milestone
+git tag vX.Y            # e.g. git tag v1.1 -m "module X stable, make test green"
+git tag                 # list milestones
+git checkout vX.Y       # inspect/rollback to a milestone
 ```
-Niente push: i tag restano locali.
+No push: tags stay local.
 
-**Se il progetto NON è git (o serve backup fisico navigabile/zippabile):**
+**If the project is NOT git (or a browsable/zippable physical backup is needed):**
 ```
 mkdir -p milestones/Vx.x
 rsync -a --exclude node_modules --exclude target --exclude __pycache__ \
       --exclude '.git' --exclude milestones ./ milestones/Vx.x/
 ```
-Poi crea `milestones/Vx.x/NOTES.md`:
+Then create `milestones/Vx.x/NOTES.md`:
 ```
-# Vx.x — <titolo milestone>
-Data: <YYYY-MM-DD>
-Stato: stabile (perché: <test/eval verdi, criteri soddisfatti>)
-Riferimento: <commit/hash o descrizione>
-Contenuto: <cosa include questo snapshot>
-Rollback: ripristina questa cartella se la versione di lavoro si rompe.
+# Vx.x — <milestone title>
+Date: <YYYY-MM-DD>
+Status: stable (why: <green tests/evals, criteria met>)
+Reference: <commit/hash or description>
+Contents: <what this snapshot includes>
+Rollback: restore this folder if the working version breaks.
 ```
 
-**Naming:** `major.minor` — `minor` a ogni milestone funzionante, `major` a cambi
-strutturali/release. Tutto resta locale al progetto.
+**Naming:** `major.minor` — `minor` at every working milestone, `major` at
+structural changes/releases. Everything stays local to the project.
 
 ---
 
-## 5b. Dati sensibili / segreti
+## 5b. Sensitive data / secrets
 
-Se il LA fornisce user, password, API key, token o altri segreti:
+If the LA provides usernames, passwords, API keys, tokens, or other secrets:
 
-- Mettili in un file dedicato fuori dal codice, es. `secrets.local.json` o `.env`,
-  e referenzialo dal sorgente (mai hard-coding).
-- Aggiungi il file a `.gitignore` **e** alle esclusioni degli snapshot `Vx.x`:
+- Put them in a dedicated file outside the code, e.g. `secrets.local.json` or
+  `.env`, and reference it from the source (never hard-code).
+- Add the file to `.gitignore` **and** to the `Vx.x` snapshot exclusions:
   ```
   # .gitignore
   .env
   secrets.local.*
   ```
   ```
-  # snapshot: aggiungi alle --exclude di rsync
+  # snapshot: add to the rsync --exclude list
   --exclude '.env' --exclude 'secrets.local.*'
   ```
-- Versiona solo un template senza valori reali (`.env.example` / `secrets.example.json`).
-- Per la produzione il file è rimovibile/sostituibile senza modificare il codice.
-- Mai stampare segreti negli output passati a Codex/Agy o nei log/report.
+- Version only a template without real values (`.env.example` / `secrets.example.json`).
+- For production the file is removable/replaceable without modifying the code.
+- Never print secrets in output passed to Codex/Agy or in logs/reports.
 
 ---
 
 ## 6. Escalation / fallback
 
-- `codex` o `agy` non disponibili, falliti, in timeout o con output ambiguo →
-  non procedere a indovinare: riporta al LA il comando, l'errore e cosa serviva.
-- Tool/comando di progetto mancante (es. `make`, runner test) → segnala al LA,
-  non aggirare silenziosamente.
+- `codex` or `agy` unavailable, failed, timed out, or with ambiguous output →
+  don't proceed by guessing: report to the LA the command, the error, and what
+  was needed.
+- Missing project tool/command (e.g. `make`, test runner) → flag it to the LA,
+  don't silently work around it.
 
 ---
 
-## 7. Stato corrente (aggiornare dopo ogni passo)
+## 7. Current state (update after each step)
 
-Breve memo vivo dello stato, così la sessione resta sincronizzata:
+A short live memo of the state, so the session stays in sync:
 
 ```
-Obiettivo: <...>
-Modello attivo: <opus|fable|...>
-Passo corrente: <n> — <descrizione>
-Stato: <in corso | in verifica Codex | atteso OK | committato>
-Ultima milestone: <Vx.x / tag>
+Goal: <...>
+Active model: <opus|fable|...>
+Current step: <n> — <description>
+Status: <in progress | in Codex review | awaiting OK | committed>
+Last milestone: <Vx.x / tag>
 ```
 
 ---
 
-## 8. Debito tecnico tracciato (`ponytail:`)
+## 8. Tracked technical debt (`ponytail:`)
 
-Ogni scorciatoia/semplificazione deliberata lascia un commento che ne nomina il
-limite e il percorso di upgrade, così un rinvio non diventa silenziosamente
-permanente:
+Every deliberate shortcut/simplification leaves a comment naming its ceiling and
+upgrade path, so a deferral doesn't silently become permanent:
 
 ```
-# ponytail: <limite raggiunto>, <trigger per rivederlo>
-# es: ponytail: lock globale, passare a lock per-account se il throughput conta
+# ponytail: <ceiling reached>, <trigger to revisit>
+# e.g.: ponytail: global lock, switch to per-account locks if throughput matters
 ```
 
-A ogni milestone (§5), prima di congelare lo snapshot, scansiona il debito:
+At each milestone (§5), before freezing the snapshot, scan the debt:
 
 ```
 grep -rnE '(#|//) ?ponytail:' . --exclude-dir=.git --exclude-dir=node_modules
 ```
 
-- Ogni hit = una riga di registro: `<file>:<riga>, <cosa è semplificato>. limite: <...>. upgrade: <...>`.
-- Flagga `no-trigger` i marker senza percorso di upgrade: sono quelli che marciscono.
-- Opzionale: persisti il registro in `PONYTAIL-DEBT.md` del progetto.
+- Each hit = one ledger row: `<file>:<line>, <what is simplified>. ceiling: <...>. upgrade: <...>`.
+- Flag `no-trigger` the markers with no upgrade path: those are the ones that rot.
+- Optional: persist the ledger in the project's `PONYTAIL-DEBT.md`.
 
-Scopo: tenere il debito visibile e rivisto agli stati stabili, non disperso.
+Purpose: keep the debt visible and reviewed at stable states, not scattered.
 
 ---
 
-## 9. Handoff, resume e recupero da crash
+## 9. Handoff, resume, and crash recovery
 
-**Handoff pianificato (contesto ~40%).** Quando il countdown del contesto scende
-verso il ~60% rimanente (≈40% usato), prima di esaurirlo:
-1. Scrivi `RESUME.md` nella radice del progetto (e, se vuoi un punto unico,
-   `~/.claude/handoffs/latest-resume.md`) con:
+**Planned handoff (~40% context).** When the context countdown drops toward ~60%
+remaining (≈40% used), before exhausting it:
+1. Write `RESUME.md` at the project root (and, if you want a single point,
+   `~/.claude/handoffs/latest-resume.md`) with:
    ```
-   # Resume — <progetto> — <YYYY-MM-DD HH:MM>
-   Obiettivo: <...>
-   Modello attivo: <...>
-   Passo corrente: <n> — <stato> (in verifica Codex / atteso OK / ...)
-   Ultima milestone: <Vx.x / tag>
-   Fatto finora: <bullet>
-   Prossimi passi: <bullet>
-   File chiave: <path:linea>
-   Decisioni aperte: <...>
+   # Resume — <project> — <YYYY-MM-DD HH:MM>
+   Goal: <...>
+   Active model: <...>
+   Current step: <n> — <status> (in Codex review / awaiting OK / ...)
+   Last milestone: <Vx.x / tag>
+   Done so far: <bullets>
+   Next steps: <bullets>
+   Key files: <path:line>
+   Open decisions: <...>
    ```
-2. Stampa il contenuto del resume in chat.
-3. Invita l'utente al `/clear`; alla nuova sessione ripartirai leggendo `RESUME.md`.
+2. Print the resume content in chat.
+3. Prompt the user for `/clear`; in the new session you resume by reading `RESUME.md`.
 
-Warning automatici a contesto pieno: il context-monitor di GSD è **già attivo
-globalmente** (avvisa l'agente a 35%/25% di contesto rimanente per qualsiasi
-progetto; dipende dalla statusline, non da `.planning/`). Per disattivarlo in un
-progetto: `.planning/config.json` → `"hooks": { "context_warnings": false }`.
+Automatic full-context warnings: GSD's context-monitor is **already active
+globally** (warns the agent at 35%/25% remaining context for any project; depends
+on the statusline, not on `.planning/`). To disable it in a project:
+`.planning/config.json` → `"hooks": { "context_warnings": false }`.
 
-In progetti GSD: usa `/gsd-pause-work` (handoff) e `/gsd-resume-work` (ripristino).
-L'iniezione dello stato progetto all'avvio (`.planning/STATE.md`) richiede invece
-GSD inizializzato + `.planning/config.json` con `"hooks": { "community": true }`.
+In GSD projects: use `/gsd-pause-work` (handoff) and `/gsd-resume-work` (restore).
+Startup project-state injection (`.planning/STATE.md`) instead requires GSD
+initialized + `.planning/config.json` with `"hooks": { "community": true }`.
 
-**Recupero da crash (PC/terminale impallato).** Claude Code persiste la sessione
-su disco a ogni turno; non serve fare nulla in anticipo.
-- Riapri il terminale **nella stessa cartella** del progetto.
-- `claude -c` → continua automaticamente l'ultima sessione di quella cartella.
-- `claude --resume` → elenco delle sessioni, scegli quella giusta.
-- Il contesto e il punto di lavoro vengono ripristinati. `claude-mem` inietta la
-  memoria cross-sessione; se presente, leggi anche `RESUME.md` per orientarti.
-- File: `/rewind` ripristina lo stato dei file (checkpoint attivi via
+**Crash recovery (frozen PC/terminal).** Claude Code persists the session to disk
+every turn; nothing needs to be done in advance.
+- Reopen the terminal **in the same project folder**.
+- `claude -c` → automatically continues that folder's last session.
+- `claude --resume` → list of sessions, pick the right one.
+- Context and work point are restored. `claude-mem` injects cross-session memory;
+  if present, also read `RESUME.md` to get oriented.
+- Files: `/rewind` restores file state (checkpoints active via
   `fileCheckpointingEnabled`).
 
-**Autonomia.** La sessione è in `defaultMode: auto`: le operazioni ordinarie non
-chiedono conferma; restano a conferma solo distruttive/irreversibili/sicurezza
-(più `git push` che è negato del tutto). I gate logici del workflow (OK Codex per
-il commit, consulto Agy) restano e vanno rispettati comunque.
+**Autonomy.** The session runs in `defaultMode: auto`: ordinary operations don't
+ask for confirmation; only destructive/irreversible/security actions still
+prompt. The workflow's logical gates (Codex's OK to commit, consulting Agy) remain
+and must be respected regardless.

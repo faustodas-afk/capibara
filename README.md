@@ -1,84 +1,84 @@
 # 🦫 Capibara
 
-Sistema di **team di sviluppo distribuito da CLI** per Claude Code: postura
-*agentic engineering* (non vibe coding), ruoli fissi, governance dei modelli,
-handoff/resume, milestone e autonomia — tutto guidato da un'unica chat.
+A **distributed CLI development team** for Claude Code: an *agentic engineering*
+posture (not vibe coding), fixed roles, model governance, handoff/resume,
+milestones and autonomy — all driven from a single chat.
 
-Capibara sta in pace con tutti gli "animali" (gli agenti) e li fa lavorare
-insieme: tranquillo ma produttivo.
+The capybara gets along with every "animal" (the agents) and makes them work
+together: calm but productive.
 
-## I ruoli
+## Roles
 
-| Ruolo | Chi | Cosa fa |
+| Role | Who | Does |
 |---|---|---|
-| **Lead Architect** | umano | visione, obiettivi, vincoli, approva |
-| **Senior Engineer** | Claude Code | esegue: codice, test, refactoring, commit |
-| **CTO** | Codex (CLI) | roadmap, validazione, autorizza i commit |
-| **Consulente** | Agy / Antigravity (CLI) | pareri su decisioni importanti |
+| **Lead Architect** | human | vision, goals, constraints, approves |
+| **Senior Engineer** | Claude Code | executes: code, tests, refactoring, commits |
+| **CTO** | Codex (CLI) | roadmap, validation, authorizes commits |
+| **Advisor** | Agy / Antigravity (CLI) | opinions on important decisions |
 
-Codex e Agy sono CLI esterne invocate dal Senior Engineer via shell; l'unica
-interfaccia umana è la chat di Claude Code.
+Codex and Agy are external CLIs invoked by the Senior Engineer via shell; the
+only human interface is the Claude Code chat.
 
-## Struttura (`skill/capibara/`)
+## Structure (`skill/capibara/`)
 
-- `SKILL.md` — la skill `/capibara` che avvia il team in una cartella.
-- `team-session-prompt.md` — il *Model*: postura, ruoli, modelli, governance,
-  continuità. Installato come `CLAUDE.md` nel progetto (auto-caricato all'avvio).
-- `team-RUNBOOK.md` — l'*Harness*: procedure operative (boot, invocazione
-  Codex/Agy, eval, worktree, milestone, debito, handoff/resume).
-- `team-init.sh` — prepara una cartella progetto (idempotente, non sovrascrive);
-  trova i template accanto a sé, quindi è portabile ovunque venga clonato.
+- `SKILL.md` — the `/capibara` skill that starts the team in a folder.
+- `team-session-prompt.md` — the *Model*: posture, roles, models, governance,
+  continuity. Installed as the project's `CLAUDE.md` (auto-loaded at startup).
+- `team-RUNBOOK.md` — the *Harness*: operational procedures (boot, Codex/Agy
+  invocation, eval, worktree, milestones, debt, handoff/resume).
+- `team-init.sh` — prepares a project folder (idempotent, never overwrites);
+  finds its templates next to itself, so it is portable wherever it is cloned.
 
-## Installazione
+## Installation
 
 ```bash
-# clona e installa la skill nella tua home
+# clone and install the skill into your home
 git clone https://github.com/faustodas-afk/capibara.git
 cp -R capibara/skill/capibara "$HOME/.claude/skills/capibara"
-# (opzionale) alias comodo
+# (optional) handy alias
 echo 'alias team-init='\''bash "$HOME/.claude/skills/capibara/team-init.sh"'\''' >> "$HOME/.zshrc"
 ```
 
-## Uso
+## Usage
 
 ```bash
-cd <cartella-progetto>
-# attiva il team in una chat:
+cd <project-folder>
+# start the team in a chat:
 #   /capibara          (slash command)
-# oppure prepara la cartella a mano:
-team-init            # installa CLAUDE.md + RUNBOOK.md
+# or prepare the folder manually:
+team-init            # installs CLAUDE.md + RUNBOOK.md
 
-# poi, ogni volta
-claude               # nuova chat già governata (zero paste)
-claude -c            # riprendi l'ultima sessione (dopo crash o /clear)
+# then, every time
+claude               # new chat, already governed (zero paste)
+claude -c            # resume the last session (after a crash or /clear)
 ```
 
-All'avvio: cartella senza codice → progetto nuovo (greenfield, chiede l'obiettivo);
-cartella con progetto esistente → ispeziona prima, poi imposta la governance
-**senza sovrascrivere** il lavoro svolto.
+At startup: a folder with no code → new project (greenfield, asks for the goal);
+a folder with an existing project → inspect first, then set up the governance
+**without overwriting** existing work.
 
-## Impostazioni Claude Code consigliate (`~/.claude/settings.json`)
+## Recommended Claude Code settings (`~/.claude/settings.json`)
 
-- `permissions.defaultMode: "auto"` — meno conferme; si ferma solo su
-  distruttivo/irreversibile/sicurezza.
-- `totalTokensReminder: "countdown"` — il modello vede sempre il contesto
-  rimanente (regola handoff a ~40%).
-- `fileCheckpointingEnabled: true` — `/rewind` ripristina i file.
-- `cleanupPeriodDays: 90` — transcript conservati a lungo per il recupero.
+- `permissions.defaultMode: "auto"` — fewer prompts; stops only on
+  destructive/irreversible/security actions.
+- `totalTokensReminder: "countdown"` — the model always sees remaining context
+  (handoff rule at ~40%).
+- `fileCheckpointingEnabled: true` — `/rewind` restores files.
+- `cleanupPeriodDays: 90` — transcripts kept longer for recovery.
 
-Recupero da crash: riaprire il terminale nella cartella e `claude -c` /
-`claude --resume` (Claude Code persiste la sessione a ogni turno).
+Crash recovery: reopen the terminal in the folder and run `claude -c` /
+`claude --resume` (Claude Code persists the session every turn).
 
-## Principi (dal whitepaper Google "The New SDLC With Vibe Coding")
+## Principles (from the Google whitepaper "The New SDLC With Vibe Coding")
 
-- Verifica = contratto (test + eval prima di dichiarare *fatto*).
-- Problema dell'80%: il giudizio umano sul 20% difficile.
-- Agent = Model + Harness: i fallimenti sono quasi sempre di configurazione.
-- Context engineering: contesto denso, statico vs dinamico.
-- Milestone `Vx.x` per cronistoria e rollback; segreti in file separato.
+- Verification = contract (tests + evals before declaring something *done*).
+- The 80% problem: human judgment on the hard 20%.
+- Agent = Model + Harness: failures are almost always configuration failures.
+- Context engineering: dense context, static vs dynamic.
+- `Vx.x` milestones for history and rollback; secrets in a separate file.
 
-## Autore
+## Author
 
 **Fausto Dasè** ([@faustodas-afk](https://github.com/faustodas-afk)).
 
-Capibara versiona il *sistema* di lavoro, non il codice dei progetti.
+Capibara versions the *working system*, not the code of the projects.
