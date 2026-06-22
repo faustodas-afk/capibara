@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# team-init.sh — Capibara: prepare a project folder for the team workflow.
-# Usage: bash team-init.sh [folder]   (default: current folder)
+# init.sh — Capibara: prepare a project folder for the team workflow.
+# Usage: bash init.sh [folder]   (default: current folder)
 # Idempotent: never overwrites existing files; appends the prompt to an existing
 # CLAUDE.md only if it isn't already there (marker).
 set -euo pipefail
 
 # Templates live in the same folder as this script (portable).
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SRC_PROMPT="$SCRIPT_DIR/team-session-prompt.md"
-SRC_RUNBOOK="$SCRIPT_DIR/team-RUNBOOK.md"
+SRC_PROMPT="$SCRIPT_DIR/session-prompt.md"
+SRC_RUNBOOK="$SCRIPT_DIR/runbook.md"
 MARK="<!-- team-session-prompt -->"
 
 dir="${1:-$PWD}"

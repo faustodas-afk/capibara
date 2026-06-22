@@ -15,17 +15,17 @@ description: >
 # Capibara — starting the team
 
 Capibara is the CLI development-team system. This skill prepares the current
-folder and starts the workflow. The `team-init.sh` script and the templates
-(`team-session-prompt.md`, `team-RUNBOOK.md`) live **in this same skill folder**
+folder and starts the workflow. The `init.sh` script and the templates
+(`session-prompt.md`, `runbook.md`) live **in this same skill folder**
 (self-contained).
 
 ## Steps
 
 1. **Prepare the current folder** (idempotent, never overwrites anything):
    ```
-   bash "$HOME/.claude/skills/capibara/team-init.sh" "$PWD"
+   bash "$HOME/.claude/skills/capibara/init.sh" "$PWD"
    ```
-   (if the skill is installed elsewhere, use the `team-init.sh` next to this SKILL.md)
+   (if the skill is installed elsewhere, use the `init.sh` next to this SKILL.md)
    It copies `RUNBOOK.md` and installs the team prompt as `CLAUDE.md` (if a
    `CLAUDE.md` already exists, it appends below the marker without touching the rest).
 

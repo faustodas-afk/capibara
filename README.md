@@ -22,11 +22,11 @@ only human interface is the Claude Code chat.
 ## Structure (`skill/capibara/`)
 
 - `SKILL.md` — the `/capibara` skill that starts the team in a folder.
-- `team-session-prompt.md` — the *Model*: posture, roles, models, governance,
+- `session-prompt.md` — the *Model*: posture, roles, models, governance,
   continuity. Installed as the project's `CLAUDE.md` (auto-loaded at startup).
-- `team-RUNBOOK.md` — the *Harness*: operational procedures (boot, Codex/Agy
+- `runbook.md` — the *Harness*: operational procedures (boot, Codex/Agy
   invocation, eval, worktree, milestones, debt, handoff/resume).
-- `team-init.sh` — prepares a project folder (idempotent, never overwrites);
+- `init.sh` — prepares a project folder (idempotent, never overwrites);
   finds its templates next to itself, so it is portable wherever it is cloned.
 
 ## Installation
@@ -36,7 +36,7 @@ only human interface is the Claude Code chat.
 git clone https://github.com/faustodas-afk/capibara.git
 cp -R capibara/skill/capibara "$HOME/.claude/skills/capibara"
 # (optional) handy alias
-echo 'alias team-init='\''bash "$HOME/.claude/skills/capibara/team-init.sh"'\''' >> "$HOME/.zshrc"
+echo 'alias team-init='\''bash "$HOME/.claude/skills/capibara/init.sh"'\''' >> "$HOME/.zshrc"
 ```
 
 ## Usage
