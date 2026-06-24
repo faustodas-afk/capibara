@@ -12,6 +12,10 @@ The default mode is "agentic engineering", not vibe coding. The distinction is
 not "do you use AI?" but how much structure and verification surround the output.
 Rules that harden the work:
 
+- **Think before coding.** State your assumptions explicitly before non-trivial
+  work; when uncertain, ask rather than guess. If a simpler approach exists, push
+  back and surface the tradeoff instead of silently picking one. (Trivial fixes —
+  typos, obvious one-liners — skip the ceremony.)
 - **Verification = contract.** Tests + evals defined before or during the work
   and mandatory before declaring something *done*; never stop at "it seems to
   work". Tests cover the deterministic part (input→output); evals the
